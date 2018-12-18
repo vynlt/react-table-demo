@@ -20,19 +20,25 @@ class MyTable extends Component {
     }
 
     handlePageChange = (pageNumber) => {
-
         this.setState({ activePage: pageNumber });
     }
 
-    handlePageNumberChange = (event) => {
-        this.handlePageChange(event.target.value)
+    handleSelectPageChange = (event) => {
+        this.setState({ activePage: event.target.value });
     }
 
     handleSizeChange = (event) => {
-        this.setState({
-            currentPageSize: parseInt(event.target.value),
-            pageSize: parseInt(event.target.value)
-        })
+        if (Math.ceil(data.length / parseInt(event.target.value)) < this.state.activePage)
+            this.setState({
+                currentPageSize: parseInt(event.target.value),
+                pageSize: parseInt(event.target.value),
+                activePage: Math.ceil(data.length / parseInt(event.target.value))
+            });
+        else
+            this.setState({
+                currentPageSize: parseInt(event.target.value),
+                pageSize: parseInt(event.target.value),
+            });
     }
 
     createPageChoice = (dataNum) => {
@@ -44,7 +50,6 @@ class MyTable extends Component {
     }
 
     handleFilterChange = () => {
-
         const resultCount = this.selectTable.getResolvedState().sortedData.length
         if (resultCount === 0)
             this.setState({
@@ -139,6 +144,7 @@ class MyTable extends Component {
                     ref={(r) => {
                         this.selectTable = r;
                     }}
+                    resizable
                     onFilteredChange={this.handleFilterChange}
                     getTheadFilterThProps={() => { return { style: { position: "inherit", overflow: "inherit" } } }}
                 />
@@ -146,7 +152,8 @@ class MyTable extends Component {
                 <div className="footer">
                     <div className="page-wrapper">
                         <span>Page</span>
-                        <select className="form-control no-full-width" onChange={this.handlePageNumberChange}>
+                        <select className="form-control no-full-width" onChange={this.handleSelectPageChange} 
+                        value={this.state.activePage}>
                             {
                                 this.createPageChoice(Math.ceil(data.length / this.state.pageSize))
                             }
@@ -155,7 +162,7 @@ class MyTable extends Component {
                     <div className="pagination-wrapper">
                         <Pagination
                             activePage={this.state.activePage}
-                            itemsCountPerPage={5}
+                            itemsCountPerPage={this.state.currentPageSize}
                             totalItemsCount={data.length}
                             pageRangeDisplayed={5}
                             onChange={this.handlePageChange}

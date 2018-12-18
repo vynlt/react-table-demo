@@ -58,7 +58,7 @@ html {font-size: 16px!important;}
 }
 
 .form-control.no-full-width{
-  width: 65px
+  width: fit-content;
 }
 
 .item-per-page-wrapper *{
@@ -70,6 +70,49 @@ html {font-size: 16px!important;}
   outline: none
 }
 
-.ReactTable .-loading{
+.ReactTable .rt-noData{
   top: 90%!important;
+}
+
+.ReactTable .rt-resizable-header {
+  padding: 6px 24px !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.ReactTable .rt-resizer:before {
+  display: inline-block;
+  position: absolute;
+  top: 3px;
+  height: 18px;
+  width: 18px;
+  color: transparent;
+  content: '.';
+  background-size: 18px 18px;
+  background-repeat: no-repeat; 
+  opacity: 0.87;
+}
+
+.ReactTable  .rt-resizable-header-content:after {
+  position: absolute;
+  top: 3px;
+  height: 18px;
+  width: 18px;
+  z-index: 120;
+  content: '\f0dc';
+  opacity: 0.5;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+
+
+.ReactTable .rt-th.-sort-asc .rt-resizable-header-content:after {
+  content: '\f0de';
+  opacity: 1;
+}
+
+.ReactTable .rt-th.-sort-desc .rt-resizable-header-content:after {
+  content: '\f0dd';
+  opacity: 1;
 }
