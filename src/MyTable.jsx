@@ -3,12 +3,11 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import moment from 'moment'
 import DatePicker from "react-datepicker";
-
-import Pagination from "react-js-pagination";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import { data } from './data.jsx'
 
+import Pagination from "react-js-pagination";
 class MyTable extends Component {
     constructor(props) {
         super(props);
@@ -19,13 +18,10 @@ class MyTable extends Component {
         };
     }
 
-    handlePageChange = (pageNumber) => {
-        this.setState({ activePage: pageNumber });
+    onPageChange = event => {
+        this.setState({ activePage: parseInt(event) });
     }
 
-    handleSelectPageChange = (event) => {
-        this.setState({ activePage: event.target.value });
-    }
 
     handleSizeChange = (event) => {
         if (Math.ceil(data.length / parseInt(event.target.value)) < this.state.activePage)
@@ -41,12 +37,8 @@ class MyTable extends Component {
             });
     }
 
-    createPageChoice = (dataNum) => {
-        var elements = [];
-        for (var i = 0; i < dataNum; i++) {
-            elements.push(<option key={i} value={(i + 1)}>{i + 1}</option>);
-        }
-        return elements;
+    handleClick = () => {
+        this.setState({ activePage: 5 });
     }
 
     handleFilterChange = () => {
@@ -63,6 +55,14 @@ class MyTable extends Component {
             this.setState({
                 currentPageSize: this.state.pageSize
             });
+    }
+
+    createPageChoice = (dataNum) => {
+        var elements = [];
+        for (var i = 0; i < dataNum; i++) {
+            elements.push(<option key={i} value={(i + 1)}>{i + 1}</option>);
+        }
+        return elements;
     }
 
     render() {
@@ -152,22 +152,22 @@ class MyTable extends Component {
                 <div className="footer">
                     <div className="page-wrapper">
                         <span>Page</span>
-                        <select className="form-control no-full-width" onChange={this.handleSelectPageChange} 
-                        value={this.state.activePage}>
+                        <select className="form-control no-full-width" onChange={(event) => this.onPageChange(event.target.value)}
+                            value={this.state.activePage}>
                             {
                                 this.createPageChoice(Math.ceil(data.length / this.state.pageSize))
                             }
                         </select>
                     </div>
-                    <div className="pagination-wrapper">
-                        <Pagination
-                            activePage={this.state.activePage}
-                            itemsCountPerPage={this.state.currentPageSize}
-                            totalItemsCount={data.length}
-                            pageRangeDisplayed={5}
-                            onChange={this.handlePageChange}
-                        />
-                    </div>
+
+                    <Pagination
+                        activePage={this.state.activePage}
+                        itemsCountPerPage={this.state.currentPageSize}
+                        totalItemsCount={data.length}
+                        pageRangeDisplayed={5}
+                        onChange={(number) => this.onPageChange(number)}
+                    />
+
 
                     <div className="item-per-page-wrapper">
                         <span>Item per page</span>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './style.scss';
 import MyTable from  './MyTable.jsx'
 
 class App extends Component {
